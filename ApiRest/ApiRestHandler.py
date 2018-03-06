@@ -92,6 +92,10 @@ class ApiRestHandler(tornado.web.RequestHandler):
 
         try:
             response = traductor.json_to_comando(body)
+            #
+            #si response["err"] entonces BAD_REQUEST
+            #y definir STATUS CODE
+            #
         except TypeError, e:
             self.set_status(HTTP_CODE_BAD_REQUEST)
             errtxt = "Error parseando el JSON %s" % e

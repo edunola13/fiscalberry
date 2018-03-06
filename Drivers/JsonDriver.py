@@ -55,6 +55,14 @@ class JsonDriver(DriverInterface):
 			print(reply.content)
 			print("salio la respuesta")
 			
+			#
+			#
+			#PARSEAR RESPUESTA
+			#VER QUE SI HAY UN ERROR DEVUELVE
+			#{"error": { "Identificador": "X", "Descripcion": "..", "Contecto": "..." } }  ESTE SERIA UN ERROR FATAL
+			#Podemos analizar los estados de "Impresora" y "Fiscal" hacerlo error parcial y ver que hacer
+			#
+
 			return reply.content
 			
 		except requests.exceptions.Timeout:			
