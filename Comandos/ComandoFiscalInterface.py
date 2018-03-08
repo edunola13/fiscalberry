@@ -2,6 +2,7 @@
 import ComandoInterface
 import logging
 
+from ComandoInterface import ComandoException
 
 class ComandoFiscalInterface(ComandoInterface.ComandoInterface):
     """Interfaz que deben cumplir las impresoras fiscales."""
@@ -40,8 +41,8 @@ class ComandoFiscalInterface(ComandoInterface.ComandoInterface):
                                                                        skipStatusErrors and "T" or "F",
                                                                        str(parameters)))
             return self.conector.sendCommand(commandNumber, parameters, skipStatusErrors)
-        except epsonFiscalDriver.ComandoException, e:
-            logging.getLogger().error("epsonFiscalDriver.ComandoException: %s" % str(e))
+        except ComandoException, e:
+            logging.getLogger().error("ComandoException: %s" % str(e))
             raise ComandoException("Error de la impresora fiscal: " + str(e))
 
     # Documentos no fiscales

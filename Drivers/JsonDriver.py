@@ -27,7 +27,7 @@ class JsonDriver(DriverInterface):
                           ('ErrorEjecucion', 'Error de Ejecucion'),
                           ]
 
-    printerStatusErrors = [
+   	printerStatusErrors = [
     						('ImpresoraOcupada', 'La Impresora esta ocupada'),
     						('ErrorImpresora', 'Error y/o falla de la impresora'),
     						('ImpresoraOffLine', "Impresora fuera de linea"),
@@ -83,26 +83,24 @@ class JsonDriver(DriverInterface):
 		    # catastrophic error. bail.
 		    logging.getLogger().error(str(e))
 
+		key= list(replyJson.keys())[0]
+		replyJson= replyJson[key]
 		return self._parseReply(replyJson, skipStatusErrors)
 
 	def _parseReply(self, reply, skipStatusErrors):
 		# Saco la Clave Estados
-        if not skipStatusErrors:
-            self._parsePrinterStatus(reply['Estado']['Impresora'])
-            self._parseFiscalStatus(reply['Estado']['Impresora'])
+		if not skipStatusErrors:
+			self._parsePrinterStatus(reply['Estado']['Impresora'])
+			self._parseFiscalStatus(reply['Estado']['Impresora'])
         reply.pop('Estado')
         return reply
 
-    def _parsePrinterStatus(self, printerStatus):
-        for value, message in self.printerStatusErrors:
-            if value in printerStatus:
-                raise PrinterStatusError, message
+	def _parsePrinterStatus(self, printerStatus):
+		for value, message in self.printerStatusErrors:
+			if value in printerStatus:
+				raise PrinterStatusError, message
 
-    def _parseFiscalStatus(self, fiscalStatus):
-        for value, message in self.fiscalStatusErrors:
-            if value in fiscalStatus:
-                raise FiscalStatusError, message
-		
-		
-
-   
+	def _parseFiscalStatus(self, fiscalStatus):
+		for value, message in self.fiscalStatusErrors:
+			if value in fiscalStatus:
+				raise FiscalStatusError, message
