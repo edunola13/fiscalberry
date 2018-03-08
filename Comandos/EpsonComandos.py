@@ -50,6 +50,26 @@ class EpsonComandos(ComandoFiscalInterface):
 
     models = ["tickeadoras", "epsonlx300+", "tm-220-af", "tm-t900fa"]
 
+    docTypes = {
+        "CUIT": 'C',
+        "LIBRETA_ENROLAMIENTO": '0',
+        "LIBRETA_CIVICA": '1',
+        "DNI": '2',
+        "PASAPORTE": '3',
+        "CEDULA": '4',
+        "SIN_CALIFICADOR": ' ',
+    }
+
+    docTypeNames = {
+        "C": "CUIT",
+        "0": 'L.E.',
+        "1": 'L.C.',
+        "2": 'DNI',
+        "3": 'PASAP',
+        "4": 'CED',
+        "5": 'S/C'
+    }
+
     ivaTypes = {
         "RESPONSABLE_INSCRIPTO": 'I',
         "RESPONSABLE_NO_INSCRIPTO": 'R',
