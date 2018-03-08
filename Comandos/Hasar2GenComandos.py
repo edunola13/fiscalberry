@@ -133,13 +133,14 @@ class Hasar2GenComandos(ComandoFiscalInterface):
 
 		jdata["CerrarDocumento"]["DireccionEMail"] = email
 
-		return self.conector.sendCommand( jdata )
+		reply= self.conector.sendCommand( jdata )
+		return reply['NumeroComprobante']
 
 
 	def cancelDocument(self):
 		"""Cancela el documento que esté abierto"""
 		jdata = {"Cancelar" : {}}
-		return self.conector.sendCommand( jdata )
+		self.conector.sendCommand( jdata )
 
 	def addItem(self, description, quantity, price, iva, itemNegative = False, discount=0, discountDescription='', discountNegative=False):
 		"""Agrega un item a la FC.
@@ -209,8 +210,8 @@ class Hasar2GenComandos(ComandoFiscalInterface):
 			}
 		}
 	
-		return self.conector.sendCommand( jdata )
-
+		reply= self.conector.sendCommand( jdata )
+		return reply['NumeroComprobante'];
 
 	# Ticket fiscal (siempre es a consumidor final, no permite datos del cliente)
 
