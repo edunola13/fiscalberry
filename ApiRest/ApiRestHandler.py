@@ -10,7 +10,7 @@ import logging
 from tornado.options import define, options
 from ApiRest.Auth import jwtauth, AuthConfig
 from Traductores.TraductoresHandler import TraductoresHandler, TraductorException
-from Drivers.FiscalPrinterDriver import FiscalStatusError, FiscalPrinterDriver
+from Drivers.FiscalPrinterDriver import PrinterException
 
 import time
 
@@ -100,16 +100,9 @@ class ApiRestHandler(tornado.web.RequestHandler):
             response["err"] = errtxt
             import sys, traceback
             traceback.print_exc(file=sys.stdout)
-        except FiscalStatusError, e:
+        except PrinterException, e:
             self.set_status(HTTP_CODE_BAD_REQUEST)
-            errtxt = "Error Fiscal: %s" % e
-            logging.error(errtxt)
-            response["err"] = errtxt
-            import sys, traceback
-            traceback.print_exc(file=sys.stdout)
-        except FiscalPrinterDriver, e:
-            self.set_status(HTTP_CODE_BAD_REQUEST)
-            errtxt = "Error Impresora: %s" % e
+            errtxt = "Error de la impresora fiscal: %s" % e
             logging.error(errtxt)
             response["err"] = errtxt
             import sys, traceback
