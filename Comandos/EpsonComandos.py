@@ -221,7 +221,7 @@ class EpsonComandos(ComandoFiscalInterface):
     def cancelDocument(self):
         if self._currentDocument in (self.CURRENT_DOC_TICKET, self.CURRENT_DOC_BILL_TICKET,
                                      self.CURRENT_DOC_CREDIT_TICKET):
-            status = self._sendCommand(self.CMD_ADD_PAYMENT[self._getCommandIndex()], ["Cancelar", "0", 'C'])
+            status = self._sendCommand(self.CMD_ADD_PAYMENT[self._getCommandIndex()], ["Cancelar", "00", 'C'])
             return status
         if self._currentDocument in (self.CURRENT_DOC_NON_FISCAL,):
             self.printNonFiscalText("CANCELADO")
@@ -251,9 +251,12 @@ class EpsonComandos(ComandoFiscalInterface):
             if self.model == "tm-220-af" or self.model == "tm-t900fa":
                 # enviar sin el iva (factura A)
                 priceUnitStr = "%0.4f" % (price / ((100.0 + iva) / 100.0))
+                logging.info(priceUnitStr)
             else:
                 # enviar sin el iva (factura A)
                 priceUnitStr = str(int(round((price / ((100 + iva) / 100)) * 100, 0)))
+        if len(priceUnitStr) == 1:
+            priceUnitStr= "0" + priceUnitStr
         ivaStr = str(int(iva * 100))
         extraparams = self._currentDocument in (self.CURRENT_DOC_BILL_TICKET,
                                                 self.CURRENT_DOC_CREDIT_TICKET) and ["", "", ""] or []
@@ -266,6 +269,8 @@ class EpsonComandos(ComandoFiscalInterface):
                                    quantityStr, priceUnitStr, ivaStr, sign, bultosStr, "0" * 8] + extraparams)
         if discount:
             discountStr = str(int(discount * 100))
+            if len(discountStr) == 1:
+                discountStr= "0" + discountStr
             self._sendCommand(self.CMD_PRINT_LINE_ITEM[self._getCommandIndex()],
                               [formatText(discountDescription[:20]), "1000",
                                discountStr, ivaStr, 'R', "0", "0"] + extraparams)
@@ -301,6 +306,8 @@ class EpsonComandos(ComandoFiscalInterface):
         else:
             # enviar sin el iva (factura A)
             priceUnitStr = str(int(round((priceUnit / ((100 + iva) / 100)) * 100, 0)))
+        if len(priceUnitStr) == 1:
+            priceUnitStr= "0" + priceUnitStr
         ivaStr = str(int(iva * 100))
         extraparams = self._currentDocument in (self.CURRENT_DOC_BILL_TICKET,
                                                 self.CURRENT_DOC_CREDIT_TICKET) and ["", "", ""] or []
@@ -335,12 +342,12 @@ class EpsonComandos(ComandoFiscalInterface):
 
     def cancelAnyDocument(self):
         try:
-            self._sendCommand(self.CMD_ADD_PAYMENT[0], ["Cancelar", "0", 'C'])
+            self._sendCommand(self.CMD_ADD_PAYMENT[0], ["Cancelar", "00", 'C'])
             return True
         except:
             pass
         try:
-            self._sendCommand(self.CMD_ADD_PAYMENT[1], ["Cancelar", "0", 'C'])
+            self._sendCommand(self.CMD_ADD_PAYMENT[1], ["Cancelar", "00", 'C'])
             return True
         except:
             pass
