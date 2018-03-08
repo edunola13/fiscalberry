@@ -4,6 +4,7 @@
 from DriverInterface import DriverInterface
 import logging
 from FiscalPrinterDriver import PrinterException
+from FiscalPrinterDriver import FiscalStatusError, FiscalPrinterDriver
 
 
 import requests
@@ -91,7 +92,7 @@ class JsonDriver(DriverInterface):
 		# Saco la Clave Estados
 		if not skipStatusErrors:
 			self._parsePrinterStatus(reply['Estado']['Impresora'])
-			self._parseFiscalStatus(reply['Estado']['Impresora'])
+			self._parseFiscalStatus(reply['Estado']['Fiscal'])
         reply.pop('Estado')
         return reply
 
