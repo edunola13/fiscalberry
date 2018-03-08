@@ -93,8 +93,8 @@ class JsonDriver(DriverInterface):
 		if not skipStatusErrors:
 			self._parsePrinterStatus(reply['Estado']['Impresora'])
 			self._parseFiscalStatus(reply['Estado']['Fiscal'])
-        reply.pop('Estado')
-        return reply
+                reply.pop('Estado')
+                return reply
 
 	def _parsePrinterStatus(self, printerStatus):
 		for value, message in self.printerStatusErrors:
